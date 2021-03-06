@@ -1,0 +1,16 @@
+serial2mqtt	KEYWORD1
+
+begin	KEYWORD2
+loopbackTopic	KEYWORD2
+online	KEYWORD2
+publish	KEYWORD2
+messageWaiting	KEYWORD2
+topic	KEYWORD2
+messageIsNumber	KEYWORD2
+messageInt	KEYWORD2
+message	KEYWORD2
+markMessageRead	KEYWORD2
+debug	KEYWORD2
+statusLed	KEYWORD2
+
+COLOR_BLACK	LITERAL1
