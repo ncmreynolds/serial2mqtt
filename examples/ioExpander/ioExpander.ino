@@ -339,12 +339,12 @@ void  loop()
         if(pinState)
         {
           pinStatus[pin] = pinStateHigh;         //Save the current status
-          mqtt.publish(pinStatePubTopic,String(pin) + ":HIGH");   //Publish the change to MQTT
+          mqtt.publish(pinStatePubTopic,String(pin) + ",HIGH");   //Publish the change to MQTT
         }
         else
         {
           pinStatus[pin] = 0;                //Save the current status
-          mqtt.publish(pinStatePubTopic,String(pin) + ":LOW");   //Publish the change to MQTT
+          mqtt.publish(pinStatePubTopic,String(pin) + ",LOW");   //Publish the change to MQTT
         }
         if(pinSwitch[pin] != 0xff)                 //Check if the pin is working as a switch
         {
@@ -535,11 +535,11 @@ void configurePins()
       if(pinStatus[pin] & pinIsOutput)
       {
         pinMode(pin,OUTPUT);
-        mqtt.publish(pinModePubTopic,String(pin) + ":OUTPUT");
+        mqtt.publish(pinModePubTopic,String(pin) + ",OUTPUT");
         if(pinStatus[pin] & pinStateHigh)
         {
           digitalWrite(pin,HIGH);
-          mqtt.publish(pinStatePubTopic,String(pin) + ":HIGH");
+          mqtt.publish(pinStatePubTopic,String(pin) + ",HIGH");
           mqtt.print(F("Pin "));
           mqtt.print(pin);
           mqtt.print(F(" OUTPUT HIGH"));
@@ -547,7 +547,7 @@ void configurePins()
         else
         {
           digitalWrite(pin,LOW);
-          mqtt.publish(pinStatePubTopic,String(pin) + ":LOW");
+          mqtt.publish(pinStatePubTopic,String(pin) + ",LOW");
           mqtt.print(F("Pin "));
           mqtt.print(pin);
           mqtt.print(F(" OUTPUT LOW"));
@@ -558,7 +558,7 @@ void configurePins()
         if(pinStatus[pin] & pinStateHigh)
         {
           pinMode(pin,INPUT_PULLUP);
-          mqtt.publish(pinModePubTopic,String(pin) + ":INPUT_PULLUP");
+          mqtt.publish(pinModePubTopic,String(pin) + ",INPUT_PULLUP");
           mqtt.print(F("Pin "));
           mqtt.print(pin);
           mqtt.print(F(" INPUT_PULLUP"));
@@ -566,7 +566,7 @@ void configurePins()
         else
         {
           pinMode(pin,INPUT);
-          mqtt.publish(pinModePubTopic,String(pin) + ":INPUT");
+          mqtt.publish(pinModePubTopic,String(pin) + ",INPUT");
           mqtt.print(F("Pin "));
           mqtt.print(pin);
           mqtt.print(F(" INPUT"));
@@ -576,7 +576,7 @@ void configurePins()
       {
         mqtt.print(F(" switches pin "));
         mqtt.println(pinSwitch[pin]);
-        mqtt.publish(pinSwitchPubTopic,String(pin) + ":" + pinSwitch[pin]);
+        mqtt.publish(pinSwitchPubTopic,String(pin) + "," + pinSwitch[pin]);
       }
       else
       {
