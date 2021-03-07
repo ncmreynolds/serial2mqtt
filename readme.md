@@ -1,6 +1,10 @@
-# Project Title
+# Simple serial2mqtt client library/application
 
-Provide an introductory paragraph, describing:
+This is a client Arduino application/library for [Lieven](https://vortex314.blogspot.com/)'s [serial2mqtt](https://github.com/vortex314/serial2mqtt) application which connected microcontrollers to an MQTT broker over serial links.
+
+Lieven has written a library for this, but it is for use in PlatformIO, much more comprehensive and part of a larger project.
+
+This is a single purpose application/library to allow an Arduino to function as a basic IO expander. It will compile and run easily on basic boards such as Arduino Uno and other AVR boards.
 
 * What your project does
 * Why people should consider using your project
@@ -57,63 +61,24 @@ These instructions will get you a copy of the project up and running on your loc
 
 ## Dependencies
 
-Describe what software and libraries you will need to install in order to build and use this project. Provide details on how to resolve these dependencies.
-
-Remember: git-lfs is a dependency that developers will need to resolve before they can get started with a repo using LFS.
-
-```
-Examples should be included
-```
+There are purposefully no dependencies, future versions may move to using ArduinoJSON.
 
 ## Getting the Source
 
-Include a link to your github reposistory (you have no idea how people will find your code), and also a summary of how to clone.
-
-
-This project is [hosted on GitHub](https://github.com/embeddedartistry/embedded-resources). You can clone this project directly using this command:
-
-```
-git clone git@github.com:embeddedartistry/embedded-resources.git
-```
+This project is [hosted on GitHub](https://github.com/ncmreynolds/serial2mqtt). You can clone this project directly using this command:
 
 ## Building
 
-Instructions for how to build your project
-
-```
-Examples should be included
-```
-
-## Running Tests
-
-Describe how to run unit tests for your project.
-
-```
-Examples should be included
-```
-
-### Other Tests
-
-If you have formatting checks, coding style checks, or static analysis tests that must pass before changes will be considered, add a section for those and provide instructions
+There is one example included with the Arduino library, ioExpander.ino and this provides control of the Arduino pins over MQTT.
 
 ## Installation
 
-Instructions for how to install your project's build artifacts
-
-```
-Examples should be included
-```
+From the project page, select 'Code' -> 'Download ZIP' and save the file somewhere appropriate. You can then install in the Arduino IDE by choosing 'Sketch' -> 'Include Library' -> 'Add .ZIP Library...'.
 
 ## Usage
 
-Instructions for using your project. Ways to run the program, how to include it in another project, etc.
-
-```
-Examples should be included
-```
-
-If your project provides an API, either provide details for usage in this document or link to the appropriate API reference documents
-
+After installation, the example will be available under "File" -> "Examples" -> "serial2mqtt" -> "ioExpander".
+ 
 **[Back to top](#table-of-contents)**
 
 # Release Process
@@ -122,7 +87,7 @@ Talk about the release process. How are releases made? What cadence? How to get 
 
 ## Versioning
 
-This project uses [Semantic Versioning](http://semver.org/). For a list of available versions, see the [repository tag list](https://github.com/your/project/tags).
+This project uses [Semantic Versioning](http://semver.org/) for Arduino library compatibility.
 
 ## Payload
 
@@ -142,30 +107,26 @@ We encourage public contributions! Please review [CONTRIBUTING.md](docs/CONTRIBU
 
 # Further Reading
 
-Provide links to other relevant documentation here
+This project entirely relies on [serial2mqtt](https://github.com/vortex314/serial2mqtt) by [Lieven](https://vortex314.blogspot.com/) and the assumptions it makes about MQTT topics. See this project for further unformation.
 
 **[Back to top](#table-of-contents)**
 
 # License
 
-Copyright (c) 2017 Embedded Artistry LLC
+Copyright (c) 2020 Nick Reynolds.
 
-This project is licensed under the MIT License - see [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the GNU GPL License - see [LICENSE.md](LICENSE.md) file for details.
 
 **[Back to top](#table-of-contents)**
 
 # Authors
 
-* **[Phillip Johnston](https://github.com/phillipjohnston)** - *Initial work* - [Embedded Artistry](https://github.com/embeddedartistry)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+* **[Nick Reynolds](https://github.com/ncmreynolds)**
 
 **[Back to top](#table-of-contents)**
 
 # Acknowledgments
 
-Provide proper credits, shoutouts, and honorable mentions here. Also provide links to relevant repositories, blog posts, or contributors worth mentioning.
-
-Give proper credits. This could be a link to any repo which inspired you to build this project, any blogposts or links to people who contributed in this project. If you used external code, link to the original source.
+This project entirely relies on [serial2mqtt](https://github.com/vortex314/serial2mqtt) by [Lieven](https://vortex314.blogspot.com/) and was written to assist (Daniel)[https://github.com/banier1] with a home automation project.
 
 **[Back to top](#table-of-contents)**
