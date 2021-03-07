@@ -1,6 +1,0 @@
-= RetroTerm Library for Arduino =
-
-Functions for making a retro terminal interface in Arduino
-
-== License ==
-
