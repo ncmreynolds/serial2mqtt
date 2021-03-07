@@ -1,14 +1,6 @@
 # Simple serial2mqtt client library/application
 
-This is a client Arduino application/library for [Lieven](https://vortex314.blogspot.com/)'s [serial2mqtt](https://github.com/vortex314/serial2mqtt) application which connected microcontrollers to an MQTT broker over serial links.
-
-Lieven has written a library for this, but it is for use in PlatformIO, much more comprehensive and part of a larger project.
-
-This is a single purpose application/library to allow an Arduino to function as a basic IO expander. It will compile and run easily on basic boards such as Arduino Uno and other AVR boards.
-
-* What your project does
-* Why people should consider using your project
-* Link to project home page
+This is a client Arduino application/library for [Lieven](https://vortex314.blogspot.com/)'s [serial2mqtt](https://github.com/vortex314/serial2mqtt) application which connects microcontrollers to an MQTT broker over serial links.
 
 ## Table of Contents
 
@@ -31,37 +23,25 @@ This is a single purpose application/library to allow an Arduino to function as 
 
 # About the Project
 
-Here you can provide more details about the project
-* What features does your project provide?
-* Short motivation for the project? (Don't be too long winded)
-* Links to the project site
+This is a client Arduino application/library for [Lieven](https://vortex314.blogspot.com/)'s [serial2mqtt](https://github.com/vortex314/serial2mqtt) application which connects microcontrollers to an MQTT broker over serial links.
 
-```
-Show some example code to describe what your project does
-Show some of your APIs
-```
+Lieven has written a library for this, but it is for use in PlatformIO, much more comprehensive and part of a larger project.
+
+This is a single purpose application/library to allow an Arduino to function as a basic I/O expander expressely for the purpose of home automation, connected directly to a Raspberry Pi over USB. It will compile and run easily on basic boards such as Arduino Uno and other AVR boards. As it is designed for home automation, you can configure some independence from the MQTT broker directly, mostly to make light switches work in the event of a broker/connectivity issue.
 
 **[Back to top](#table-of-contents)**
 
 # Project Status
 
-Show the build status if you have a CI server:
-
-[![Build Status](http://your-server:12345/job/badge/icon)](http://your-server:12345/job/http://your-server:12345/job/badge/icon/)
-
-Describe the current release and any notes about the current state of the project. Examples: currently compiles on your host machine, but is not cross-compiling for ARM, APIs are not set, feature not implemented, etc.
+This project was written specifically to help with a custom home automation project and is therefore sparsely documented. However should you wish to make use of it, please feel free.
 
 **[Back to top](#table-of-contents)**
 
 # Getting Started
 
-This section should provide instructions for other developers to
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
 ## Dependencies
 
-There are purposefully no dependencies, future versions may move to using ArduinoJSON.
+There are purposefully no dependencies to make it trivial to install and build, future versions may move to using ArduinoJSON.
 
 ## Getting the Source
 
@@ -69,7 +49,7 @@ This project is [hosted on GitHub](https://github.com/ncmreynolds/serial2mqtt). 
 
 ## Building
 
-There is one example included with the Arduino library, ioExpander.ino and this provides control of the Arduino pins over MQTT.
+There is one example included with the Arduino library, ioExpander.ino and this provides control of the Arduino pins over MQTT for home automation purposes.
 
 ## Installation
 
@@ -90,7 +70,7 @@ To make effective use of the example you will need to edit two lines in the ioEx
 
 In line 48 you *must* set the hostname of the Linux system the Arduino is connected to. The linux daemon uses the hostname as part of the MQTT topics it services.
 
-In line 49 you *must* set serial device the Arduino "connects as", which is usually something like /dev/TTYUSB0 or /dev/ttyACM0 but stripped of the leading /dev/tty. This will vary depending on the board/system but is part of the MQTT topics the linux daemon services and must be set to match.
+In line 49 you *must* set serial device the Arduino "connects as", which is usually something like /dev/TTYUSB0 or /dev/ttyACM0 but stripped of the leading /dev/tty. So for example /dev/ttyACM0 becomes just ACM0. This will vary depending on the board/system but is part of the MQTT topics the linux daemon services and must be set to match.
 
 Change these to reflect your system and upload the sketch to the Arduino. The library in principle supports different serial ports than 'Serial', see lines 151 and 155 should you wish to change it to 'Serial2' etc., but as the expected use case is for USB connected Arduinos this is unlikely to be necessary.
 
@@ -117,6 +97,8 @@ On the Linux system you connect the Arduino board to you will need to configure 
     }
 }
 ```
+
+Please see the [serial2mqtt](https://github.com/vortex314/serial2mqtt) documentation for how to install and configure the linux daemon. On the Raspberry Pi, the prebuilt ARM binary from
 
 Once the Arduino is flashed and connected to the linux system running the daemon, you can control pins on the Arduino by sending messages to topics on the MQTT server to which the linux daemon is a subscriber. Broadly these are...
 
