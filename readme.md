@@ -73,17 +73,39 @@ There is one example included with the Arduino library, ioExpander.ino and this 
 
 ## Installation
 
-From the project page, select 'Code' -> 'Download ZIP' and save the file somewhere appropriate. You can then install in the Arduino IDE by choosing 'Sketch' -> 'Include Library' -> 'Add .ZIP Library...'.
+From the project page, select 'Code' -> 'Download ZIP' and save the file somewhere appropriate.
+
+You can then install in the Arduino IDE by choosing 'Sketch' -> 'Include Library' -> 'Add .ZIP Library...'.
 
 ## Usage
 
 After installation, the example will be available under "File" -> "Examples" -> "serial2mqtt" -> "ioExpander".
- 
+
+To make effective use fo the example you will need to edit two lines in the ioExpander sektch.
+
+```
+48 const String serial2mqttHostname = "raspberrypi";  //The hostname of the linux host where serial2mqtt is running
+49 const String serial2mqttUsbDevice = "ACM0";        //The serial device (eg. /dev/TTYUSB0 or /dev/ttyACM0) that the microcontroller serial port appears as, less the 'tty'
+```
+
+In line 48 you *must* set the hostname of the Linux system the Arduino is connected to. The linux daemon uses the hostname as part of the MQTT topics it services.
+
+In line 49 you *must* set serial device the Arduino "connects as", which is usually something like /dev/TTYUSB0 or /dev/ttyACM0 but stripped of the leading /dev/tty. This will vary depending on the board/system but is part of the MQTT topics the linux daemon services and must be set to match.
+
+Once configured, you can control pins on the Arduino by sending messages to topics on the MQTT server to which the linux daemon is a subscriber. Broadly these are...
+
+* dst/<HOSTNAME>.<USB device>/pinMode  - Publish messages here to set the 'mode' of each pin in the format <pin number>,<pin mode> where pin mode is INPUT/INPUT_PULLUP/OUTPUT
+* dst/<HOSTNAME>.<USB device>/pinState - Publish messages here to set the 'state' of each ouput pin in the format <pin number>,<pin mode> where pin state is HIGH/LOW or 1-254 for PWM output. It does not check a pin can do PWM.
+* dst/<HOSTNAME>.<USB device>/pinSwitch - Publish messages here to set the 'switch' relationship of a pin in the format <input pin number>,<output pin number>. To delete the relationship set the output pin to 'none'.
+
+* src/<HOSTNAME>.<USB device>/pinMode  - On startup, once online the microcontroller informs MQTT of the 'mode' of each pin in the format <pin number>,<pin mode> where pin mode is INPUT/INPUT_PULLUP/OUTPUT
+* src/<HOSTNAME>.<USB device>/pinState - Once online, on state change the microcontroller informs MQTT of the 'state' of each input pin in the format <pin number>,<pin mode> where pin state is HIGH/LOW
+* src/<HOSTNAME>.<USB device>/pinSwitch - On startup, once online the microcontroller informs MQTT of the 'switch' relationship of each pin in the format <input pin number>,<output pin number> where such a relationship exists
+
+
 **[Back to top](#table-of-contents)**
 
 # Release Process
-
-Talk about the release process. How are releases made? What cadence? How to get new releases?
 
 ## Versioning
 
@@ -95,13 +117,11 @@ This project uses [Semantic Versioning](http://semver.org/) for Arduino library 
 
 # How to Get Help
 
-Provide any instructions or contact information for users who need to get further help with your project.
+For help, please contact [Nick Reynolds](https://github.com/ncmreynolds) on serial2mqtt@arcanium.london.
 
 # Contributing
 
-Provide details about how people can contribute to your project. If you have a contributing guide, mention it here. e.g.:
-
-We encourage public contributions! Please review [CONTRIBUTING.md](docs/CONTRIBUTING.md) for details on our code of conduct and development process.
+Should you wish to contribute, please contact [Nick Reynolds](https://github.com/ncmreynolds) on serial2mqtt@arcanium.london.
 
 **[Back to top](#table-of-contents)**
 
@@ -127,6 +147,6 @@ This project is licensed under the GNU GPL License - see [LICENSE.md](LICENSE.md
 
 # Acknowledgments
 
-This project entirely relies on [serial2mqtt](https://github.com/vortex314/serial2mqtt) by [Lieven](https://vortex314.blogspot.com/) and was written to assist (Daniel)[https://github.com/banier1] with a home automation project.
+This project entirely relies on [serial2mqtt](https://github.com/vortex314/serial2mqtt) by [Lieven](https://vortex314.blogspot.com/) and was written to assist [Daniel](https://github.com/banier1) with a home automation project.
 
 **[Back to top](#table-of-contents)**
