@@ -115,7 +115,7 @@ mosquitto_pub -t dst/raspberrypi.ACM0/pinMode -m 6,OUTPUT
 mosquitto_pub -t dst/raspberrypi.ACM0/pinState -m 6,HIGH
 ```
 
-The example can also associate an input pin with an output pin and work independently of the MQTT server. This is designed for use in home automation and specifically designed so light switches etc. continue to function should the MQTT server or linux daemon fail.
+The example can also associate an input pin with an output pin and work independently of the MQTT server. This is designed for use in home automation and specifically so that light switches etc. continue to function should the MQTT server or linux daemon fail.
 
 A real world example of configuring pin 6 as an output and then configuring pin 7 that it toggles pin 6 could be...
 
@@ -126,7 +126,7 @@ mosquitto_pub -t dst/raspberrypi.ACM0/pinMode -m 7,INPUT_PULLUP
 mosquitto_pub -t dst/raspberrypi.ACM0/pinSwitch -m 7,6
 ```
 
-All this configuration is stored in the EEPROM of the Arduino, again for resilience in the case of a restart or power loss. The *state* of pins is not stored, to save wear on the EEPROM, only their configuration as input or output and whether one pin toggles anopther.
+All this configuration is stored in the EEPROM of the Arduino, again for resilience in the case of a restart or power loss. The *state* of pins is not stored, to save wear on the EEPROM, only their configuration as input or output and whether one pin toggles another.
 
 The Arduino also publishes to MQTT in a different topic.
 
@@ -153,8 +153,6 @@ If a pin is set to toggle another pin, you will see state changes for both pins.
 ## Versioning
 
 This project uses [Semantic Versioning](http://semver.org/) for Arduino library compatibility.
-
-## Payload
 
 **[Back to top](#table-of-contents)**
 
