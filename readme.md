@@ -1,6 +1,6 @@
-# Simple serial2mqtt client library/application
+# Simple serial2mqtt client application/library
 
-This is a client Arduino application/library for [Lieven](https://vortex314.blogspot.com/)'s [serial2mqtt](https://github.com/vortex314/serial2mqtt) application which connects microcontrollers to an MQTT broker over serial links.
+This is a client Arduino application/library for [Lieven](https://vortex314.blogspot.com/)'s [serial2mqtt](https://github.com/vortex314/serial2mqtt) application which connects Arduino microcontrollers to an MQTT broker over serial links.
 
 ## Table of Contents
 
@@ -23,7 +23,7 @@ This is a client Arduino application/library for [Lieven](https://vortex314.blog
 
 # About the Project
 
-This is a client Arduino application/library for [Lieven](https://vortex314.blogspot.com/)'s [serial2mqtt](https://github.com/vortex314/serial2mqtt) application which connects microcontrollers to an MQTT broker over serial links.
+This is a client Arduino application/library for [Lieven](https://vortex314.blogspot.com/)'s [serial2mqtt](https://github.com/vortex314/serial2mqtt) application which connects Arduino microcontrollers to an MQTT broker over serial links.
 
 Lieven has written a library for this, but it is for use in PlatformIO, much more comprehensive and part of a larger project.
 
@@ -41,15 +41,15 @@ This project was written specifically to help with a custom home automation proj
 
 ## Dependencies
 
-There are purposefully no dependencies to make it trivial to install and build, future versions may move to using ArduinoJSON.
+There are purposefully no dependencies to make it trivial to install and build, future versions may move to using ArduinoJSON for serialising/deserialising messages.
 
 ## Getting the Source
 
-This project is [hosted on GitHub](https://github.com/ncmreynolds/serial2mqtt). You can clone this project directly using this command:
+This project is [hosted on GitHub](https://github.com/ncmreynolds/serial2mqtt).
 
 ## Building
 
-There is one example included with the Arduino library, ioExpander.ino and this provides control of the Arduino pins over MQTT for home automation purposes.
+There is one example included with the Arduino library, ioExpander.ino and this provides control of the Arduino pins over MQTT for home automation purposes when paired with the serial2mqtt linux daemon.
 
 ## Installation
 
@@ -98,7 +98,7 @@ On the Linux system you connect the Arduino board to you will need to configure 
 }
 ```
 
-Please see the [serial2mqtt](https://github.com/vortex314/serial2mqtt) documentation for how to install and configure the linux daemon. On the Raspberry Pi, the prebuilt ARM binary from
+Please see the [serial2mqtt](https://github.com/vortex314/serial2mqtt) documentation for how to install and configure the linux daemon. On the Raspberry Pi, the prebuilt ARM binary from the [Lieven's main project build directory](https://github.com/vortex314/serial2mqtt/tree/master/build) works well enough for use without needing to build your own copy.
 
 Once the Arduino is flashed and connected to the linux system running the daemon, you can control pins on the Arduino by sending messages to topics on the MQTT server to which the linux daemon is a subscriber. Broadly these are...
 
@@ -170,7 +170,7 @@ Should you wish to contribute, please contact [Nick Reynolds](https://github.com
 
 # Further Reading
 
-This project entirely relies on [serial2mqtt](https://github.com/vortex314/serial2mqtt) by [Lieven](https://vortex314.blogspot.com/) and the assumptions it makes about MQTT topics. See this project for further unformation.
+This project entirely relies on [serial2mqtt](https://github.com/vortex314/serial2mqtt) by [Lieven](https://vortex314.blogspot.com/) and the assumptions it makes about MQTT topics. See this project for further unformation, this project is entirely reliant on it.
 
 **[Back to top](#table-of-contents)**
 
@@ -190,6 +190,6 @@ This project is licensed under the GNU GPL License - see [LICENSE.md](LICENSE.md
 
 # Acknowledgments
 
-This project entirely relies on [serial2mqtt](https://github.com/vortex314/serial2mqtt) by [Lieven](https://vortex314.blogspot.com/) and was written to assist [Daniel](https://github.com/banier1) with a home automation project.
+This project entirely relies on [serial2mqtt](https://github.com/vortex314/serial2mqtt) by [Lieven](https://vortex314.blogspot.com/) and was written to assist [Daniel](https://github.com/banier1) with a Raspberry Pi based home automation project.
 
 **[Back to top](#table-of-contents)**
