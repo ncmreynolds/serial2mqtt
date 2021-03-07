@@ -81,7 +81,7 @@ You can then install in the Arduino IDE by choosing 'Sketch' -> 'Include Library
 
 After installation, the example will be available under "File" -> "Examples" -> "serial2mqtt" -> "ioExpander".
 
-To make effective use fo the example you will need to edit two lines in the ioExpander sektch.
+To make effective use of the example you will need to edit two lines in the ioExpander sketch.
 
 ```
 48 const String serial2mqttHostname = "raspberrypi";  //The hostname of the linux host where serial2mqtt is running
@@ -92,16 +92,68 @@ In line 48 you *must* set the hostname of the Linux system the Arduino is connec
 
 In line 49 you *must* set serial device the Arduino "connects as", which is usually something like /dev/TTYUSB0 or /dev/ttyACM0 but stripped of the leading /dev/tty. This will vary depending on the board/system but is part of the MQTT topics the linux daemon services and must be set to match.
 
-Once configured, you can control pins on the Arduino by sending messages to topics on the MQTT server to which the linux daemon is a subscriber. Broadly these are...
+Change these to reflect your system and upload the sketch to the Arduino. The library in principle supports different serial ports than 'Serial', see lines 151 and 155 should you wish to change it to 'Serial2' etc., but as the expected use case is for USB connected Arduinos this is unlikely to be necessary.
 
-* dst/<HOSTNAME>.<USB device>/pinMode  - Publish messages here to set the 'mode' of each pin in the format <pin number>,<pin mode> where pin mode is INPUT/INPUT_PULLUP/OUTPUT
-* dst/<HOSTNAME>.<USB device>/pinState - Publish messages here to set the 'state' of each ouput pin in the format <pin number>,<pin mode> where pin state is HIGH/LOW or 1-254 for PWM output. It does not check a pin can do PWM.
-* dst/<HOSTNAME>.<USB device>/pinSwitch - Publish messages here to set the 'switch' relationship of a pin in the format <input pin number>,<output pin number>. To delete the relationship set the output pin to 'none'.
+On the Linux system you connect the Arduino board to you will need to configure serial2mqtt.json for 'JSON object' format. A working configuration might look like...
 
-* src/<HOSTNAME>.<USB device>/pinMode  - On startup, once online the microcontroller informs MQTT of the 'mode' of each pin in the format <pin number>,<pin mode> where pin mode is INPUT/INPUT_PULLUP/OUTPUT
-* src/<HOSTNAME>.<USB device>/pinState - Once online, on state change the microcontroller informs MQTT of the 'state' of each input pin in the format <pin number>,<pin mode> where pin state is HIGH/LOW
-* src/<HOSTNAME>.<USB device>/pinSwitch - On startup, once online the microcontroller informs MQTT of the 'switch' relationship of each pin in the format <input pin number>,<output pin number> where such a relationship exists
+```
+{
+    "mqtt": {
+        "connection": "tcp://localhost:1883"
+    },
+    "serial": {
+        "baudrate": 115200,
+        "ports": [
+        "/dev/ttyACM0"
+        ],
+    "protocol":"jsonObject"
+    },
+    "log" : {
+        "protocol":false,
+        "debug":true,
+        "useColors":false,
+        "mqtt":false,
+        "program":true
+    }
+}
+```
 
+Once the Arduino is flashed and connected to the linux system running the daemon, you can control pins on the Arduino by sending messages to topics on the MQTT server to which the linux daemon is a subscriber. Broadly these are...
+
+```
+dst/<HOSTNAME>.<USB device>/pinMode  - Publish messages here to set the 'mode' of each pin in the format <pin number>,<pin mode> where pin mode is INPUT/INPUT_PULLUP/OUTPUT
+dst/<HOSTNAME>.<USB device>/pinState - Publish messages here to set the 'state' of each ouput pin in the format <pin number>,<pin mode> where pin state is HIGH/LOW/TOGGLE or 1-254 for PWM output. It does not check a pin can do PWM.
+dst/<HOSTNAME>.<USB device>/pinSwitch - Publish messages here to set the 'switch' relationship of a pin in the format <input pin number>,<output pin number>. To delete the relationship set the output pin to 'none'.
+```
+
+...note that the pins used for the Arduino hardware serial port, usually 0 and 1 are not available, for obvious reasons. A real world example of configuring pin 6 as an output and then switching it high could be...
+
+```
+mosquitto_pub -t dst/raspberrypi.ACM0/pinMode -m 6,OUTPUT
+mosquitto_pub -t dst/raspberrypi.ACM0/pinState -m 6,HIGH
+```
+
+A real world example of configuring pin 6 as an output and then switching it high could be...
+
+```
+mosquitto_pub -t dst/raspberrypi.ACM0/pinMode -m 6,OUTPUT
+mosquitto_pub -t dst/raspberrypi.ACM0/pinState -m 6,HIGH
+```
+
+The Arduino also reports back to MQTT in a different topic.
+
+```
+src/<HOSTNAME>.<USB device>/pinMode  - On startup, once online the microcontroller informs MQTT of the 'mode' of each pin in the format <pin number>,<pin mode> where pin mode is INPUT/INPUT_PULLUP/OUTPUT
+src/<HOSTNAME>.<USB device>/pinState - Once online, on state change the microcontroller informs MQTT of the 'state' of each input pin in the format <pin number>,<pin mode> where pin state is HIGH/LOW
+src/<HOSTNAME>.<USB device>/pinSwitch - On startup, once online the microcontroller informs MQTT of the 'switch' relationship of each pin in the format <input pin number>,<output pin number> where such a relationship exists
+```
+
+So if you have set pin 7 as an input, then when its state changes you will receive messages on a topic. A real world example of this might be...
+
+```
+mosquitto_sub -t src/raspberrypi.ACM0/pinState
+7:LOW
+```
 
 **[Back to top](#table-of-contents)**
 
