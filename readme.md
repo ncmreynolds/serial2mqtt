@@ -133,14 +133,20 @@ mosquitto_pub -t dst/raspberrypi.ACM0/pinMode -m 6,OUTPUT
 mosquitto_pub -t dst/raspberrypi.ACM0/pinState -m 6,HIGH
 ```
 
-A real world example of configuring pin 6 as an output and then switching it high could be...
+The example can also associate an input pin with an output pin and work independently of the MQTT server. This is designed for use in home automation and specifically designed so light switches etc. continue to function should the MQTT server or linux daemon fail.
+
+A real world example of configuring pin 6 as an output and then configuring pin 7 that it toggles pin 6 could be...
 
 ```
 mosquitto_pub -t dst/raspberrypi.ACM0/pinMode -m 6,OUTPUT
-mosquitto_pub -t dst/raspberrypi.ACM0/pinState -m 6,HIGH
+mosquitto_pub -t dst/raspberrypi.ACM0/pinState -m 6,LOW
+mosquitto_pub -t dst/raspberrypi.ACM0/pinMode -m 7,INPUT_PULLUP
+mosquitto_pub -t dst/raspberrypi.ACM0/pinSwitch -m 7,6
 ```
 
-The Arduino also reports back to MQTT in a different topic.
+All this configuration is stored in the EEPROM of the Arduino, again for resilience in the case of a restart or power loss. The *state* of pins is not stored, to save wear on the EEPROM, only their configuration as input or output and whether one pin toggles anopther.
+
+The Arduino also publishes to MQTT in a different topic.
 
 ```
 src/<HOSTNAME>.<USB device>/pinMode  - On startup, once online the microcontroller informs MQTT of the 'mode' of each pin in the format <pin number>,<pin mode> where pin mode is INPUT/INPUT_PULLUP/OUTPUT
@@ -148,12 +154,15 @@ src/<HOSTNAME>.<USB device>/pinState - Once online, on state change the microcon
 src/<HOSTNAME>.<USB device>/pinSwitch - On startup, once online the microcontroller informs MQTT of the 'switch' relationship of each pin in the format <input pin number>,<output pin number> where such a relationship exists
 ```
 
-So if you have set pin 7 as an input, then when its state changes you will receive messages on a topic. A real world example of this might be...
+So if you have set pin 7 as an input with pullup, then when its state changes you will receive messages on a topic. A real world example of this might be...
 
 ```
 mosquitto_sub -t src/raspberrypi.ACM0/pinState
-7:LOW
+7,LOW
+7,HIGH
 ```
+
+If a pin is set to toggle another pin, you will see state changes for both pins.
 
 **[Back to top](#table-of-contents)**
 
